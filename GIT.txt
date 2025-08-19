@@ -1,0 +1,592 @@
+                                        Key Concepts:-
+
+Distributed/Decentralized (but can be centralized)
+ - Most of the operations are local. But we use network connection when we push it to remote repositories.
+
+Version
+ - Only version snapshots not files
+
+Repository 
+ - Contains files, history, config managed by Git
+
+Commit 
+ - Is a saved changes in the repository 
+ - Impact history
+ - SHA1 hash for unique identifier
+
+Branches
+ - timeline with commits 
+ - Master is default and main 
+
+Head
+ - Pointer to the last commit on branch 
+
+Remote
+ - Some pointer to the remote repository - not local
+ - It can be within network, enterprise or in the internet (GitHub GitLab Bitbucket etc)
+
+
+
+					Workflow
+
+There are two ways of workflow one is local and another is Remote
+
+Local:- Steps for local 
+
+        
+      Working Dir (local) ---- staging Area ----- Git repository   	|  GitHub
+
+1) 	init 								   Setup 
+
+2)    	Work                      Add 			commit --------> push  (others will make the changes )
+
+3)            <--------------------------------- pull from GitHub after update from others)                     
+
+
+
+Remote:- Steps for remote
+
+      Working Dir (local) ---- staging Area ----- Git repository   	|  GitHub
+
+1) 	init 	<-------------------Clone to local working Dir ---------- Setup in GitHub first then clone 
+
+2)    	Work                      Add 			commit --------> push  (others will make the changes )
+
+3)            <--------------------------------- pull from GitHub after update from others)                     
+
+
+
+					Installation of Git in Windows
+
+					CLI commands
+
+1) git help config 
+
+					Git Configutation 
+
+Some basic configuration need to be done at Git end before we start the actual work. 
+eg:- adding user name and email address 
+
+
+git config --global user.name "Karthikeyan"
+git config --global user.email "keyan.sv@gmail.com"
+
+git config --global --list  --> this will list the current global configuration 
+
+output should look like :-
+
+user.name=Karthikeyan
+user.email=keyan.sv@gmail.com 
+
+when we run the git commands in backround it create a .gitconfig test file and add the value which we given while configuring the user and email address.
+
+the file will be in ~/.gitconfig
+
+
+					Starting with GIT (Local)
+
+1) git init git-demo --> initiate new repository in local 
+
+eg:-
+PS C:\Users\Administrator> git init git-demo
+Initialized empty Git repository in C:/Users/Administrator/git-demo/.git/
+PS C:\Users\Administrator>
+
+Note:- .git directory is a hidden one which keeps all the relevant files to git source control.
+
+eg:- 
+
+PS C:\Users\Administrator\git-demo> cd .\.git\
+PS C:\Users\Administrator\git-demo\.git> dir
+
+
+    Directory: C:\Users\Administrator\git-demo\.git
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----          7/9/2025   6:14 AM                hooks
+d-----          7/9/2025   6:14 AM                info
+d-----          7/9/2025   6:14 AM                objects
+d-----          7/9/2025   6:14 AM                refs
+-a----          7/9/2025   6:14 AM            130 config
+-a----          7/9/2025   6:14 AM             73 description
+-a----          7/9/2025   6:14 AM             23 HEAD
+
+
+PS C:\Users\Administrator\git-demo\.git>
+
+
+2) When we start with a project first need to download the respective files in a directory and then run " git init" command so that the files will be controlled by Git .
+
+once we run the git init command the prompt become master branch.
+
+
+					GIT commands
+
+1) Lecture Command Listing
+
+pwd
+ls
+mate README.md --> create a file in MAC 
+ls
+git status --> this will show the files has been modified in the working directory VS Git's staging are
+git add README.md  --> To add the README.md file in the GIT staging area
+git status ---> to verify there are no other files to be added in the GIT staging area
+git commit -m "Initial commit"  --> Commits all files currently in Git's staging area. The -m parameter allows for 					a commit message directly from the command line.
+clear
+git status
+ 
+Again if we are modifying the same file (which is tracked by Git) we have to run the below command again 
+ 
+git status
+git add README.md  --> contents are modified 
+git status   --> to verify 
+git commit -m "Second commit" --> Description of the commit
+
+Note:- Instead of running all commands there is a single command to do all these works
+
+git commit -am "Second commit" 
+
+-a -> add the modified files 
+-m -> commit with description 
+
+If we need to add multiple files (new and modified) in the GIT staging area run with single command
+
+git add .  --> The period parameter for the git add command will recursively add all new and newly modified files.
+
+Note: - "git add -A" also available to add files 
+
+If we added files in the staging for commit and we don't commit as the changes are wrong then the below command will unstage the files . 
+
+git reset HEAD <filename> 
+
+If we need to remove the changes made in the file managed by GIT , then run the below command
+
+git checkout -- <filename> 
+
+Example for git checkout 
+----------------------------------------------------------------------------------------------------------------
+I have added one file file-1.txt in my local repo ie git-demo
+
+PS C:\Users\Administrator\git-demo> git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   file-1.txt         ----------------------> this shows my file-1.txt is ready for commit 
+
+Next I made some changes on the file-1.txt which is ready for commit . but when we run the "git status" it ask use to add first then make commit 
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   file-1.txt
+
+Then I run the checkout command to remove the changes made in file-1.txt 
+
+
+PS C:\Users\Administrator\git-demo>
+PS C:\Users\Administrator\git-demo> git checkout file-1.txt
+Updated 1 path from the index
+PS C:\Users\Administrator\git-demo> git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   file-1.txt
+
+PS C:\Users\Administrator\git-demo>
+
+Now the file is in old state ie ready for commit.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+
+TO verify the history of commit we made in the GIT 
+
+git log
+
+This will show the username, email, Commit hash no , username, email, date and description of the commit. 
+The logs will be viewed in reverse order , means the last commit will show at the top in the log output.
+
+ 
+To view the log output in more compact view, run the below command
+
+git log --oneline --graph --decorate --color 
+
+
+TO remove a file which is in commit state 
+
+git rm <file-name>
+
+The above command will remove the file from commit but when we run the "git status" it will show the removed file that need to be removed from staging area. In that case we have to run the commit command again 
+
+git commit -m " removing unwanted file"
+
+Example for git remove
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+PS C:\Users\Administrator\git-demo> git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   file-1.txt
+
+PS C:\Users\Administrator\git-demo> git commit -m "commit for file-1.txt"
+[master de7ca22] commit for file-1.txt
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file-1.txt
+PS C:\Users\Administrator\git-demo> git status
+On branch master
+nothing to commit, working tree clean
+PS C:\Users\Administrator\git-demo> git rm file-1.txt
+rm 'file-1.txt'
+PS C:\Users\Administrator\git-demo> git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        deleted:    file-1.txt
+
+PS C:\Users\Administrator\git-demo> git add file-1.txt
+fatal: pathspec 'file-1.txt' did not match any files
+PS C:\Users\Administrator\git-demo> dir
+
+
+    Directory: C:\Users\Administrator\git-demo
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         7/16/2025   8:59 AM             37 README.md.txt
+
+
+PS C:\Users\Administrator\git-demo> git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        deleted:    file-1.txt
+
+PS C:\Users\Administrator\git-demo> git commit -m " removed the file-1.txt"
+[master cb42c29]  removed the file-1.txt
+ 1 file changed, 1 deletion(-)
+ delete mode 100644 file-1.txt
+PS C:\Users\Administrator\git-demo> git status
+On branch master
+nothing to commit, working tree clean
+PS C:\Users\Administrator\git-demo>
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+If any of the committed files get deleted (removed from file system) without GIT knowledge, then it will show you in "git status" command
+
+In the git status output it gives option to remove the path of the deleted file but "git add -u" will fix the issue 
+
+git add -u  --> remove the file entry outside the GIT info
+git commit -m "deleted file"
+
+To move a committed file to another directory
+
+git mv <filename> <dir name>
+
+But in git status the moved file will be shown as "renamed" with path 
+so need to run the commit command again 
+
+git commit -m "move file to dir"    
+
+If you want to exclude any of the files from the GIT working directory use the below command .
+
+Need to create a .gitignore file and enter the value to be ignored 
+eg mate .gitignore 
+   *.log --> file content and save it . This will ignore the *. log file for Git operations even though the files are present in the GIT working dir.
+
+Then You add the file using "git add .gitignore" and "git commit -m "adding ignore file"  
+
+Note: .gitignore file in your repository must be version controlled like any other file in GIT.
+
+Example 
+------------------------------------------------------------------------------------------------------------------------------------------
+
+PS C:\Users\Administrator\.ssh> cat .\id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFmdyAlXGoM1mVdsARBEix8PiIhg16zs/hV1f8/F8GPSOnKznMswuyjpuY6b/iUT8F1Jdm8r1qaYAYW3kKEp7DAxqOYzQpDixB8MOJmCPhIeDtf46f1AjE7UHL3y8gvZa7eecpvEcDZOyws8LjwgciKQwhrwYKDGGVh7cptZljamudMtY5GcYeqJ84BlHcWwdY0myvxQmPQcCaa6NLx0k0ijQjxOZ5FKQQrVUcZv/kp9su8ipw3Owv1bWGELrG6cow6U6ew4ZDngpuKxdNmayVUJolb6al1VmMFd2wrFcyzaN03oKSeB9ytlOprjfWNx9P/M9F5Ts17FTmho/DYjtIm8e5RSFpRiA9q0ZPedV3p51+JaURZMjZNlXIrunN1RyyvKp+edUoYp8wQW7P0mZ8a/CIIU1O6f+6UtTrNIB7wtLoDXJAI1e06zBQWN5MBnkJ79D7YK5vbq1z5VFoDTK817PkofTZzzITF3YEhYD/66SKAzkz9cHBUCogITt1WXM= admin@keyan.sv@gmail.com
+PS C:\Users\Administrator\.ssh> cd ..\git-demo\
+PS C:\Users\Administrator\git-demo> ssh -T git@github.com
+The authenticity of host 'github.com (140.82.114.4)' can't be established.
+ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
+Hi karthikeyans0305! You've successfully authenticated, but GitHub does not provide shell access.
+PS C:\Users\Administrator\git-demo>
+PS C:\Users\Administrator\git-demo>
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+							Remote 
+
+
+SSH Authentication 
+
+To make authentication between the local working Git directory to GitHub repository , follow the steps below.
+
+
+On the local working directory create a folder for ssh. 
+
+mkdir .ssh
+
+Generating an SSH Key
+
+ssh-keygen -t rsa -C "your.name@your-company.com" 
+ssh-keygen -t rsa -C "admin@keyan.sv@gmail.com" 
+
+This command will create id_rsa and id_rsa.pub 
+
+Now login into  https://github.com website with registered user ID and password. 
+
+Once u signed in got to account settings (Right top) and  SSH Keys on the loft menu --> Add SSH key --> Name of the key and paste the content of id_rsa.pub file in inside the box and save it .
+
+Run the below command to check the login is happening using the ssh key 
+
+ssh -T git@github.com 
+
+It give successfully authenticated message !!
+
+ 
+Once the authentication is done . Connect the local repo with GitHub 
+
+Create a new repo in GitHub 
+
+get the push commands from the GitHub page (use existing repo)
+
+git remote add origin git@github.com:karthikeyans0305/git-demo.git
+git branch -M main
+git push -u origin main
+
+Example:-
+--------------------------------------------------------------------------------------------------------------------------------------------
+PS C:\Users\Administrator\git-demo>
+PS C:\Users\Administrator\git-demo> git remote add origin git@github.com:karthikeyans0305/git-demo.git
+PS C:\Users\Administrator\git-demo> git branch -M main
+PS C:\Users\Administrator\git-demo> git push -u origin main
+Enumerating objects: 15, done.
+Counting objects: 100% (15/15), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (15/15), 1.28 KiB | 119.00 KiB/s, done.
+Total 15 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), done.
+To github.com:karthikeyans0305/git-demo.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+PS C:\Users\Administrator\git-demo>
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+For ".gitignore" testing , added the calc.txt file name in .gitignore and created a new file "calc.txt" in repo and tried to push but it was not reflected in the git repo (local and remote)
+
+example:-
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+PS C:\Users\Administrator\git-demo> dir
+
+
+    Directory: C:\Users\Administrator\git-demo
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         7/17/2025   8:45 AM              8 .gitignore
+-a----         7/17/2025   9:13 AM             48 file-3.txt
+-a----         7/16/2025   8:59 AM             37 README.md.txt
+
+
+PS C:\Users\Administrator\git-demo> dir
+
+
+    Directory: C:\Users\Administrator\git-demo
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         7/17/2025   9:16 AM                New folder
+-a----         7/17/2025   9:16 AM              8 .gitignore
+-a----         7/17/2025   9:16 AM             13 calc.txt
+-a----         7/17/2025   9:13 AM             48 file-3.txt
+-a----         7/16/2025   8:59 AM             37 README.md.txt
+
+
+PS C:\Users\Administrator\git-demo> git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+
+nothing added to commit but untracked files present (use "git add" to track)
+PS C:\Users\Administrator\git-demo> git commit -am "added calc.txt file"
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+
+nothing added to commit but untracked files present (use "git add" to track)
+PS C:\Users\Administrator\git-demo> git push origin main
+Everything up-to-date
+PS C:\Users\Administrator\git-demo> cat .gitignore
+calc.txt
+PS C:\Users\Administrator\git-demo>
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Commands for Remote repository
+--------------------------------
+Lecture Command Listing
+git status
+git remote add origin git@github.com:scm-ninja/git-demo.git
+git remote -v
+git push -u origin master
+git push origin master
+ls
+cd web/
+mate index.html
+clear
+git commit -am "Updating index page for GH"
+git status
+git pull origin master
+git push origin master
+ 
+
+Command Reference
+Creating a remote repository reference
+
+git remote add remote-name remote-repository-location
+Using git remote add command allows us to associate a remote repository. Normally, you want to paste in the full URL for the remote repository given to you by your Git host (GitHub). By convention, the first or primary remote repository is named origin.
+
+List Git's Remotes
+
+git remote -v
+The git remote command lists the names of all the remote repositories and the -v parameter (verbose) will display the full URL of the remote repository for each remote name listed
+
+Send Changes to Remote
+
+git push -u remote-name branch-name
+git push remote-name branch-name
+The git push sends all your local changes (commits) on branch branch-name to the remote named remote-name. The -u parameter is needed the first time you push a branch to the remote.
+
+Receive Changes from Remote
+
+git pull remote-name branch-name
+The git pull receives all your remote changes (commits) from the remote named remote-name and on branch branch-name.
+		
+
+							Change the existing branch name
+							-------------------------------
+
+ ON Remote :-
+
+GitHub --> Settings --> Repositories --> Default repository name --> change the "main" to your name"
+
+
+Check the local repository :-
+-----------------------------------------------------------------
+PS C:\Users\Administrator\2git-demo> git status
+On branch master     --------------------------------------------------> this repo name is master , but in remote repo name is "main"
+
+No commits yet
+
+nothing to commit (create/copy files and use "git add" to track)
+PS C:\Users\Administrator\2git-demo>  
+
+------------------------------------------------------------------
+
+Now add a new file and commit with 2git-demo
+
+-----------------------------------------------------------------------------------------
+PS C:\Users\Administrator\2git-demo> git add -u
+PS C:\Users\Administrator\2git-demo> git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        file-1.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+PS C:\Users\Administrator\2git-demo> git commit -m "initial commit of 2git-demo"
+On branch master
+
+Initial commit
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        file-1.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+PS C:\Users\Administrator\2git-demo>
+-------------------------------------------------------------------------------------------
+
+
+Change the local repo name from master to main 
+
+
+PS C:\Users\Administrator\2git-demo> git branch -m main
+PS C:\Users\Administrator\2git-demo> git status
+On branch main  ------------------------------------------------> branch name is changed to main 
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        file-1.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+PS C:\Users\Administrator\2git-demo>
+
+
+Now sync the local repo with remote repo with below command 
+
+
+git remote add origin git@github.com:karthikeyans0305/2git-demo.git
+
+
+example :-
+---------
+
+PS C:\Users\Administrator\2git-demo> git add .\file-1.txt
+PS C:\Users\Administrator\2git-demo> git add .\file-1.txt^C
+PS C:\Users\Administrator\2git-demo> git status
+On branch main
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   file-1.txt
+
+PS C:\Users\Administrator\2git-demo> git commit -m "initial commit"
+[main (root-commit) bcc9bca] initial commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file-1.txt
+PS C:\Users\Administrator\2git-demo> git status
+On branch main
+nothing to commit, working tree clean
+PS C:\Users\Administrator\2git-demo> git push origin main
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 237 bytes | 237.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To github.com:karthikeyans0305/2git-demo.git
+ * [new branch]      main -> main
+PS C:\Users\Administrator\2git-demo>
+
+
+
+---------------------------------------------------------------------------------
+
+
+
